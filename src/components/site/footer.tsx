@@ -24,23 +24,19 @@ export function Footer() {
               { href: "/brief", label: "Brief a piece" },
               { href: "/apply", label: "Apply as designer" },
               { href: "/how-it-works", label: "How it works" },
-              { href: "/pricing", label: "Pricing & fees" },
             ]}
           />
           <FooterCol
             title="Designers"
             links={[
-              { href: "/designers", label: "Roster" },
-              { href: "/manifesto", label: "Manifesto" },
-              { href: "/standards", label: "Quality standards" },
+              { href: "/#roster", label: "Roster" },
+              { href: "/#open-briefs", label: "Open briefs" },
             ]}
           />
           <FooterCol
-            title="Company"
+            title="Contact"
             links={[
-              { href: "/about", label: "About" },
-              { href: "/journal", label: "Journal" },
-              { href: "/contact", label: "Contact" },
+              { href: "mailto:hello@joinoffcut.com", label: "hello@joinoffcut.com" },
             ]}
           />
         </div>

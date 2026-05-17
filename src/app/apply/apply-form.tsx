@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
 import { FieldGroup, FieldLabel, Input, Textarea, ChipChoice } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
+import { applicationSchema, type ApplicationInput } from "@/lib/schemas";
+import { submitApplication } from "./actions";
 
 const DISCIPLINES = [
   "Outerwear",
@@ -33,31 +34,11 @@ const TURNAROUND = [
   "Depends on the piece",
 ];
 
-const schema = z.object({
-  name: z.string().min(2, "Your name."),
-  brand: z.string().optional(),
-  email: z.string().email("Valid email please."),
-  city: z.string().min(2, "Where are you based?"),
-  instagram: z
-    .string()
-    .min(2, "We need somewhere to see your work — IG, site, or both.")
-    .max(60),
-  website: z.string().optional(),
-  disciplines: z.string().min(1, "Pick what you make most."),
-  scale: z.string().min(1, "Pick your scale."),
-  turnaround: z.string().min(1, "Typical turnaround?"),
-  rate: z
-    .string()
-    .min(2, "Give us a starting rate or range."),
-  pitch: z
-    .string()
-    .min(80, "Tell us what makes your work yours (80+ chars)."),
-});
-
-type FormValues = z.infer<typeof schema>;
+type FormValues = ApplicationInput;
 
 export function ApplyForm() {
   const [submitted, setSubmitted] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -65,13 +46,18 @@ export function ApplyForm() {
     control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(applicationSchema),
     mode: "onBlur",
   });
 
   const onSubmit = async (data: FormValues) => {
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitted(data.name.split(" ")[0]);
+    setServerError(null);
+    const res = await submitApplication(data);
+    if (!res.ok) {
+      setServerError(res.error);
+      return;
+    }
+    setSubmitted(data.name.split(" ")[0] ?? data.name);
   };
 
   if (submitted) {
@@ -274,6 +260,11 @@ export function ApplyForm() {
           20-minute call and walk you through onboarding. Most decisions
           within a week.
         </p>
+        {serverError && (
+          <p className="border border-signal/40 bg-signal/10 px-4 py-3 font-mono text-[12px] uppercase tracking-[0.1em] text-signal">
+            ⚠ {serverError}
+          </p>
+        )}
         <Button type="submit" arrow disabled={isSubmitting}>
           {isSubmitting ? "Submitting…" : "Send application"}
         </Button>

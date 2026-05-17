@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { FieldGroup, FieldLabel, Input, Textarea, ChipChoice } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
+import { briefSchema, type BriefInput } from "@/lib/schemas";
+import { submitBrief } from "./actions";
 
 const PIECE_TYPES = [
   "Top",
@@ -31,31 +32,14 @@ const TIMELINES = ["2–3 weeks", "3–5 weeks", "5–8 weeks", "Flexible"];
 
 const SIZES = ["XS", "S", "M", "L", "XL", "Custom measurements"];
 
-const schema = z.object({
-  pieceType: z.string().min(1, "Pick what kind of piece you want."),
-  title: z
-    .string()
-    .min(8, "Give it a one-line description (8+ chars).")
-    .max(120, "Keep it under 120 characters."),
-  description: z
-    .string()
-    .min(60, "Give us at least a few sentences (60+ chars)."),
-  references: z.string().optional(),
-  size: z.string().min(1, "Pick a size or note custom measurements."),
-  budget: z.string().min(1, "Pick a budget range."),
-  timeline: z.string().min(1, "Pick a timeline."),
-  city: z.string().min(2, "Where are you shipping to?"),
-  email: z.string().email("We need a valid email to send pitches."),
-  handle: z.string().optional(),
-});
-
-type FormValues = z.infer<typeof schema>;
+type FormValues = BriefInput;
 
 export function BriefForm() {
   const [submitted, setSubmitted] = useState<{
     id: string;
     title: string;
   } | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -63,15 +47,18 @@ export function BriefForm() {
     control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(briefSchema),
     mode: "onBlur",
   });
 
   const onSubmit = async (data: FormValues) => {
-    await new Promise((r) => setTimeout(r, 600));
-    // eslint-disable-next-line react-hooks/purity -- placeholder id; real id comes from server in event handler context
-    const id = `BRF-${String(Date.now()).slice(-3)}`;
-    setSubmitted({ id, title: data.title });
+    setServerError(null);
+    const res = await submitBrief(data);
+    if (!res.ok) {
+      setServerError(res.error);
+      return;
+    }
+    setSubmitted({ id: `BRF-${res.id.slice(0, 8).toUpperCase()}`, title: data.title });
   };
 
   if (submitted) {
@@ -252,12 +239,16 @@ export function BriefForm() {
         />
       </FieldGroup>
 
-      {/* Submit */}
       <div className="flex flex-col items-start gap-4 border-t border-line pt-10">
         <p className="font-sans text-[14px] leading-relaxed text-muted">
           Submitting is free. You only pay if you accept a pitch. We hold the
           deposit in escrow until you approve the finished piece.
         </p>
+        {serverError && (
+          <p className="border border-signal/40 bg-signal/10 px-4 py-3 font-mono text-[12px] uppercase tracking-[0.1em] text-signal">
+            ⚠ {serverError}
+          </p>
+        )}
         <Button type="submit" arrow disabled={isSubmitting}>
           {isSubmitting ? "Sending brief…" : "Send brief to designers"}
         </Button>

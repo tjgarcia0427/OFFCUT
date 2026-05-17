@@ -16,11 +16,11 @@ export function Nav() {
           <Link href="/how-it-works" className="hover:text-signal">
             How it works
           </Link>
-          <Link href="/designers" className="hover:text-signal">
+          <Link href="/#roster" className="hover:text-signal">
             Designers
           </Link>
-          <Link href="/manifesto" className="hover:text-signal">
-            Manifesto
+          <Link href="/#open-briefs" className="hover:text-signal">
+            Open briefs
           </Link>
         </nav>
 

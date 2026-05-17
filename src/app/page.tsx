@@ -261,7 +261,7 @@ const sampleBriefs = [
 
 function LiveBriefs() {
   return (
-    <section className="border-b border-line">
+    <section id="open-briefs" className="scroll-mt-16 border-b border-line">
       <div className="mx-auto max-w-[1400px] px-5 py-20 md:px-8 md:py-28">
         <div className="mb-10 flex items-end justify-between gap-6">
           <div>
@@ -275,10 +275,10 @@ function LiveBriefs() {
             </h2>
           </div>
           <Link
-            href="/briefs"
+            href="/brief"
             className="hidden items-center gap-1 font-mono text-[11px] uppercase tracking-[0.12em] hover:text-signal md:inline-flex"
           >
-            See all 36 open
+            Brief one yourself
             <ArrowUpRight size={14} />
           </Link>
         </div>
@@ -327,8 +327,8 @@ function LiveBriefs() {
         </ul>
 
         <div className="mt-10 flex flex-col items-center gap-3 md:hidden">
-          <Button href="/briefs" arrow variant="outline">
-            See all 36 open briefs
+          <Button href="/brief" arrow variant="outline">
+            Brief one yourself
           </Button>
         </div>
       </div>
@@ -377,7 +377,7 @@ const designers = [
 
 function Roster() {
   return (
-    <section className="border-b border-line bg-ink text-paper">
+    <section id="roster" className="scroll-mt-16 border-b border-line bg-ink text-paper">
       <div className="mx-auto max-w-[1400px] px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 flex items-end justify-between gap-6">
           <div>
@@ -391,10 +391,10 @@ function Roster() {
             </h2>
           </div>
           <Link
-            href="/designers"
+            href="/apply"
             className="hidden items-center gap-1 font-mono text-[11px] uppercase tracking-[0.12em] hover:text-signal md:inline-flex"
           >
-            Browse the roster
+            Apply to the roster
             <ArrowUpRight size={14} />
           </Link>
         </div>
@@ -500,8 +500,8 @@ function ForDesigners() {
               <Button href="/apply" arrow>
                 Apply to join
               </Button>
-              <Button href="/manifesto" variant="outline">
-                Read the manifesto
+              <Button href="/how-it-works" variant="outline">
+                How it works
               </Button>
             </div>
           </div>
