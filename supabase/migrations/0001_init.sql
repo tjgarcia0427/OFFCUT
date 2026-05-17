@@ -5,20 +5,20 @@
 create extension if not exists pgcrypto;
 
 create table if not exists public.briefs (
-  id           uuid primary key default gen_random_uuid(),
-  created_at   timestamptz not null default now(),
-  status       text not null default 'open',  -- open | matched | closed
-  piece_type   text not null,
-  title        text not null,
-  description  text not null,
-  references   text,
-  size         text not null,
-  budget       text not null,
-  timeline     text not null,
-  city         text not null,
-  email        text not null,
-  handle       text,
-  notes        text  -- admin notes
+  id               uuid primary key default gen_random_uuid(),
+  created_at       timestamptz not null default now(),
+  status           text not null default 'open',  -- open | matched | closed
+  piece_type       text not null,
+  title            text not null,
+  description      text not null,
+  reference_links  text,
+  size             text not null,
+  budget           text not null,
+  timeline         text not null,
+  city             text not null,
+  email            text not null,
+  handle           text,
+  notes            text  -- admin notes
 );
 
 create index if not exists briefs_created_at_idx on public.briefs (created_at desc);

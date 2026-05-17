@@ -18,7 +18,7 @@ export async function submitBrief(input: BriefInput): Promise<SubmitResult> {
       piece_type: data.pieceType,
       title: data.title,
       description: data.description,
-      references: data.references ?? null,
+      reference_links: data.references ?? null,
       size: data.size,
       budget: data.budget,
       timeline: data.timeline,

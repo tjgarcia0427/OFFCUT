@@ -15,7 +15,7 @@ type Brief = {
   piece_type: string;
   title: string;
   description: string;
-  references: string | null;
+  reference_links: string | null;
   size: string;
   budget: string;
   timeline: string;
@@ -252,13 +252,13 @@ function BriefRow({ b }: { b: Brief }) {
             {b.description}
           </p>
         </div>
-        {b.references && (
+        {b.reference_links && (
           <div className="mt-4 border-l-2 border-signal/40 pl-5">
             <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
               References
             </div>
             <p className="mt-1 whitespace-pre-wrap font-mono text-[13px] leading-relaxed text-ink-2">
-              {b.references}
+              {b.reference_links}
             </p>
           </div>
         )}

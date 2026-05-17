@@ -12,7 +12,7 @@ export type Database = {
           piece_type: string;
           title: string;
           description: string;
-          references: string | null;
+          reference_links: string | null;
           size: string;
           budget: string;
           timeline: string;
@@ -28,7 +28,7 @@ export type Database = {
           piece_type: string;
           title: string;
           description: string;
-          references?: string | null;
+          reference_links?: string | null;
           size: string;
           budget: string;
           timeline: string;
