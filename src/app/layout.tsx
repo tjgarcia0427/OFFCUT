@@ -21,9 +21,28 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OFFCUT — custom streetwear, made on commission",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://joinoffcut.com"
+  ),
+  title: {
+    default: "OFFCUT — custom streetwear, made on commission",
+    template: "%s — OFFCUT",
+  },
   description:
     "Brief a designer. Get a one-of-one piece made for you. OFFCUT is the commission platform for independent streetwear designers.",
+  openGraph: {
+    type: "website",
+    siteName: "OFFCUT",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@joinoffcut",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
